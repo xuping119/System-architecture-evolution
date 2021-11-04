@@ -17,7 +17,7 @@ public class LoginController {
             Model model
     ){
         System.out.println("username = " + username + ", password = " + password + ", model = " + model);;
-        if (username.equals("11")){
+        if (username.equals("123")){
             return "index";
         }else{
             return "login";
