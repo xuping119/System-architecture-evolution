@@ -1,14 +1,14 @@
 package com.yrlx.cmsserver;
 
-import java.io.IOException;
-import java.io.Reader;
 import com.yrlx.cmsserver.entity.User;
-
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.io.Reader;
 
 public class UserTest {
 
@@ -19,6 +19,7 @@ public class UserTest {
         //创建流
         Reader reader=null;
         try {
+            //一般不使用这个配置文件，在springboot中
             //读取mybatis-config.xml文件到reader对象中
             reader= Resources.getResourceAsReader(resources);
             } catch (IOException e) {
