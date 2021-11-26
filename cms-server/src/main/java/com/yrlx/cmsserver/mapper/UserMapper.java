@@ -10,4 +10,6 @@ public interface UserMapper {
     public List<User> getAllUsers();
 
     public int addUser(User user);
+
+    public int delUser(String name);
 }

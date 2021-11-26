@@ -6,18 +6,15 @@ import com.yrlx.cmsserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin("*")
 public class LoginController {
 
     @Autowired
     private UserService userService;
 
-    @CrossOrigin("*")
     @RequestMapping("/login")
     public String login(
             @RequestParam(value = "username",required = false) String username,
@@ -32,32 +29,31 @@ public class LoginController {
         }
     }
 
-    @CrossOrigin("*")
     @RequestMapping("/register")
     public JsonResult register(
             @RequestParam(value = "username",required = true) String username,
             @RequestParam(value = "password",required = true) String password
     ){
         JsonResult result = new JsonResult();
-//        JSON.parseObject("");
+
         //校验参数
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             result.setMsg("用户名和密码不能为空");
             return result;
         }
 
-        // 验证用户名是否已经注册
-        if (!userService.haveUser(username)) {
-            result.setMsg("该用户名已存在!");
+        return userService.register(new User(username,password));
+    }
+
+    @RequestMapping("/del")
+    public JsonResult deleteByUser(@RequestBody User user){
+        JsonResult result = new JsonResult();
+        System.out.println(user.toString());
+        if (user == null || StringUtils.isEmpty(user.getName())){
+            result.setMsg("用户名不能为空");
             return result;
         }
 
-        //注册
-        if (1 != userService.addUser(new User(username,password))) {
-            result.setMsg("注册失败");
-            return result;
-        }
-        result.setMsg("注册成功");
-        return result;
+        return  userService.deleteByName(user.getName());
     }
 }

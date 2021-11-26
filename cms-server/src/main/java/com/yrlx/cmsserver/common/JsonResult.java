@@ -8,6 +8,7 @@ import lombok.Setter;
 public class JsonResult<T> {
     private String code;
     private String msg;
+    private String text;
     private T data;
 
     public JsonResult() {
