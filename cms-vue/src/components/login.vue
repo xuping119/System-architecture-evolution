@@ -71,12 +71,11 @@ Vue.use(Element)
         submitForm(login){
           this.$refs[login].validate((valid)=>{
             if(valid){
-              this.$http.post('http://127.0.0.1:8081/login',{
-                username: this.login.username,
-                password:this.login.password
-              },{emulateJSON:true}).then(result =>{
+              var user = JSON.stringify({name:this.login.username,password:this.login.password})
+
+              this.$http.post('http://127.0.0.1:8081/login',user,{emulateJSON:true}).then(result =>{
                 console.log(result);
-                if(result.bodyText ==='index'){
+                if(result.data.code ==='1000'){
                   this.$router.push({path:'home'});
                 }else{
                   console.log("登录失败");

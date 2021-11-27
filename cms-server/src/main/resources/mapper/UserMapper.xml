@@ -4,18 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yrlx.cmsserver.mapper.UserMapper">
-    <select id="getUser" parameterType="java.lang.String" resultType="com.yrlx.cmsserver.entity.User">
-            select * from account where name = #{name}
+    <select id="getUser" parameterType="java.lang.String" resultType="int">
+            select count(id) from account where name = #{name}
     </select>
+
+    <select id="login" parameterType="map" resultType="int">
+        select count(id) from account where name = #{name} and  password = #{password}
+    </select>
+
+    <select id="getUserByState" parameterType="map" resultType="int" >
+        select count(id) from account where name = #{name} and state = #{state}
+    </select>
+
     <select id="getAllUsers"  resultType="com.yrlx.cmsserver.entity.User">
             select * from account
     </select>
 
     <insert id="addUser" parameterType="com.yrlx.cmsserver.entity.User" >
-        insert into account(name,password) values (#{name},#{password})
+        insert into account(name,password,state) values (#{name},#{password},#{state})
     </insert>
 
     <delete id="delUser" parameterType="java.lang.String">
-        delete from account where name = #{name}
+        update account set state = 0 where name = #{name}
     </delete>
 </mapper>

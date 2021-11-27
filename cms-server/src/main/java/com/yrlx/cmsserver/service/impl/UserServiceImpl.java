@@ -7,7 +7,9 @@ import com.yrlx.cmsserver.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -15,33 +17,25 @@ public class UserServiceImpl implements UserService {
     @Autowired
     protected UserMapper userMapper;
 
-    @Override
-    public boolean haveUser(String name) {
-        User user = userMapper.getUser(name);
-        //System.out.println(user.toString());
-        if (user == null){
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public User getUser(String name) {
-        User user = userMapper.getUser(name);
-        if (user != null){
-            return user;
-        }
-        return null;
-    }
-
-    @Override
     public List<User> getAllUsers() {
         List<User> userList = userMapper.getAllUsers();
         return userList;
     }
 
-    public int addUser(User user) {
-        return userMapper.addUser(user);
+    @Override
+    public JsonResult login(User user) {
+        JsonResult result = new JsonResult();
+        //查询登录信息
+        Map map = new HashMap<String,Object>();
+        map.put("name",user.getName());
+        map.put("password",user.getPassword());
+        if (0 == userMapper.login(map)) {
+            result.setMsg("用户名或密码不正确!");
+            return result;
+        }
+        result.setCode("1000");
+        result.setMsg("登录成功");
+        return result;
     }
 
     @Override
@@ -49,13 +43,14 @@ public class UserServiceImpl implements UserService {
         JsonResult result = new JsonResult();
 
         // 验证用户名是否已经注册
-        if (haveUser(user.getName())) {
+        if (0 != userMapper.getUser(user.getName())){
             result.setMsg("该用户名已存在!");
             return result;
         }
 
         //注册
-        if (1 != addUser(user)) {
+        user.setState(1);
+        if (1 != userMapper.addUser(user)) {
             result.setMsg("注册失败");
             return result;
         }
@@ -64,18 +59,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public JsonResult deleteByName(String userName) {
+    public JsonResult unRegister(User user) {
         JsonResult result = new JsonResult();
 
         // 验证用户名是否已经注册
-        if (!haveUser(userName)) {
-            result.setMsg("该用户不存在!");
+        Map map = new HashMap<String,Object>();
+        map.put("name",user.getName());
+        map.put("state",1);
+        if (0 == userMapper.getUserByState(map)) {
+            result.setMsg("该用户不存在或已注销!");
             return result;
         }
 
         //删除
-        userMapper.delUser(userName);
-        result.setMsg("删除成功");
+        userMapper.delUser(user.getName());
+        result.setMsg("注销成功");
         return result;
 
     }
