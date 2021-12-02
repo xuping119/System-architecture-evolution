@@ -4,6 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration >
+    <typeAliases>
+        <typeAlias type="com.yrlx.cmsserver.entity.Student" alias="student"/>
+        <typeAlias type="com.yrlx.cmsserver.entity.Teacher" alias="teacher"/>
+    </typeAliases>
+
     <!-- 环境配置 -->
     <environments default="development">
         <environment id="development">

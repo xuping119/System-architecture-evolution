@@ -3,18 +3,19 @@ package com.yrlx.cmsserver.controller;
 import com.yrlx.cmsserver.common.JsonResult;
 import com.yrlx.cmsserver.entity.User;
 import com.yrlx.cmsserver.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
+
 @RestController
 @CrossOrigin("*")
 public class LoginController {
 
-    @Autowired
+    @Resource
     private UserService userService;
 
     @RequestMapping("/login")

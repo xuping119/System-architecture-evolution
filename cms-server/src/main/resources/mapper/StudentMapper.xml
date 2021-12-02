@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yrlx.cmsserver.mapper.StudentMapper">
+
+    <!--
+    方式一、关联表查询，效率高 基于结果的查询
+    -->
+    <resultMap id="studentmap" type="com.yrlx.cmsserver.entity.Student">
+        <result property="id" column="sid"/>
+        <result property="name" column="sname"/>
+        <!-- 复杂的属性，需要单独处理
+           对象：association
+           集合：collection
+        -->
+        <association property="teacher" javaType="com.yrlx.cmsserver.entity.Teacher" >
+            <result property="name" column="tname"/>
+        </association>
+    </resultMap>
+    <select id="getStudentTeacher" resultMap="studentmap">
+        SELECT s.id AS sid,s.name AS sname,t.name AS tname FROM student s , teacher t WHERE s.tid = t.id
+    </select>
+
+
+    <!--
+    方式二、子查询，效率低 基于查询的查询
+    -->
+    <resultMap id="studentmap2" type="com.yrlx.cmsserver.entity.Student">
+        <association property="teacher" column="tid" javaType="com.yrlx.cmsserver.entity.Teacher" select="getteacher">
+
+        </association>
+    </resultMap>
+    <select id="getStudentTeacherBySelect" resultMap="studentmap2">
+        select * from student
+    </select>
+    <select id="getteacher" resultType="com.yrlx.cmsserver.entity.Teacher">
+        select name from teacher where id = #{tid}
+    </select>
+</mapper>
