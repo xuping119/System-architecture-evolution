@@ -3,32 +3,30 @@ package com.yrlx.cmsserver.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-/*
-* Student Teacher  实现多对一查询
-* */
+import java.util.List;
 
-@Setter
 @Getter
-public class Student {
+@Setter
+public class Teacher2 {
     private int id;
     private String name;
-    private Teacher teacher;
+    private List<Student2> students;
 
-    public Student() {
+    public Teacher2() {
     }
 
-    public Student(int id, String name, Teacher teacher) {
+    public Teacher2(int id, String name, List<Student2> students) {
         this.id = id;
         this.name = name;
-        this.teacher = teacher;
+        this.students = students;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Teacher2{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", teacher=" + teacher +
+                ", students=" + students +
                 '}';
     }
 }

@@ -4,31 +4,31 @@ import lombok.Getter;
 import lombok.Setter;
 
 /*
-* Student Teacher  实现多对一查询
-* */
+ * Student2 Teacher2  实现一对多查询
+ * */
 
 @Setter
 @Getter
-public class Student {
+public class Student2 {
     private int id;
     private String name;
-    private Teacher teacher;
+    private int tid;
 
-    public Student() {
+    public Student2() {
     }
 
-    public Student(int id, String name, Teacher teacher) {
+    public Student2(int id, String name, int tid) {
         this.id = id;
         this.name = name;
-        this.teacher = teacher;
+        this.tid = tid;
     }
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Student2{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", teacher=" + teacher +
+                ", tid=" + tid +
                 '}';
     }
 }
